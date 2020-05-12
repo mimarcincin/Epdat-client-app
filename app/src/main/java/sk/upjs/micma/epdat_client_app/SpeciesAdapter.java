@@ -18,15 +18,6 @@ public class SpeciesAdapter extends ListAdapter<Plant, SpeciesViewHolder> {
 
     public SpeciesAdapter() {
         super(new SpeciesDiff());
-        List<Plant> list  = new LinkedList<>();
-        Plant s1 = new Plant(new Long(1), "fam1", "gen1", "spec1", "auth1", "S", "S", "S");
-        Plant s2 = new Plant(new Long(1), "fam1", "gen1", "spec1", "auth1", "S", "S", "S");
-        Plant s3 = new Plant(new Long(1), "fam1", "gen1", "spec1", "auth1", "S", "S", "S");
-        for (int i = 0; i < 50; i++) {
-           list.add(new Plant(new Long(i),i+"",i+"",i+"",i+"",i+"",i+"",i+""));
-        }
-
-        //submitList(list);
     }
 
     @NonNull

@@ -29,7 +29,7 @@
             android:text="Family" />
 
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/familyEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -43,11 +43,12 @@
             android:text="Genus" />
 
         <EditText
-            android:id="@+id/editText3"
+            android:id="@+id/genusEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Enter Species Name"
+            android:enabled="false"
+            android:hint="Enter Genus Name"
             android:inputType="textPersonName" />
 
         <TextView
@@ -57,10 +58,11 @@
             android:text="Species" />
 
         <EditText
-            android:id="@+id/editText2"
+            android:id="@+id/speciesEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:enabled="false"
             android:hint="Enter Species Name"
             android:inputType="textPersonName" />
 
@@ -71,11 +73,12 @@
             android:text="Tissue" />
 
         <EditText
-            android:id="@+id/editText4"
+            android:id="@+id/tissueEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Enter Tissue"
+            android:enabled="false"
             android:inputType="textPersonName" />
 
         <Button
