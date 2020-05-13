@@ -1,13 +1,18 @@
 package sk.upjs.micma.epdat_client_app;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 //import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 
+import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
+
+import androidx.annotation.ArrayRes;
 import androidx.appcompat.app.AppCompatActivity;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
@@ -17,25 +22,36 @@ public class MainActivity extends AppCompatActivity {
     private EditText genusEditText;
     private EditText speciesEditText;
     private EditText tissueEditText;
+    private SearchableSpinner familySpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        familyEditText = (EditText) findViewById(R.id.familyEditText);
+      //  familyEditText = (EditText) findViewById(R.id.familyEditText);
         genusEditText = (EditText) findViewById(R.id.genusEditText);
         speciesEditText = (EditText) findViewById(R.id.speciesEditText);
         tissueEditText = (EditText) findViewById(R.id.tissueEditText);
+        familySpinner = (SearchableSpinner) findViewById(R.id.familyBox);
+
+        familySpinner.setTitle("Select family");
+        this.setUpFamilySpinner();
 
         familyEditText.addTextChangedListener(familyWatcher);
         genusEditText.addTextChangedListener(genusWatcher);
+    }
+    private void setUpFamilySpinner(){
+         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.families_array, android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        familySpinner.setAdapter(adapter);
     }
 
     public void openSpeciesActivity(View view) {
         Intent intent = new Intent(this, SpeciesTabActivity.class);
 
-        String family = "" + familyEditText.getText().toString();
+        String family = "" + familySpinner.getSelectedItem().toString();
+        //String family = "" + familyEditText.getText();
         String genus = "" + genusEditText.getText().toString();
         String species = "" + speciesEditText.getText().toString();
         String tissue = "" + tissueEditText.getText().toString();
