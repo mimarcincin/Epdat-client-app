@@ -1,100 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-
-
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="58dp">
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Search species by attributes"
-            android:textSize="24sp" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Family" />
-
-        <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-            android:id="@+id/familyBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:hintText="Select Family Name" />
-
-     <!--   <EditText
-            android:id="@+id/familyEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Enter Family Name"
-            android:inputType="textPersonName" /> -->
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Genus" />
-
-        <EditText
-            android:id="@+id/genusEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:enabled="false"
-            android:hint="Enter Genus Name"
-            android:inputType="textPersonName" />
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Species" />
-
-        <EditText
-            android:id="@+id/speciesEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:enabled="false"
-            android:hint="Enter Species Name"
-            android:inputType="textPersonName" />
-
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Tissue" />
-
-        <EditText
-            android:id="@+id/tissueEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Enter Tissue"
-            android:enabled="false"
-            android:inputType="textPersonName" />
-
-        <Button
-            android:id="@+id/searchButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Search Species"
-            android:onClick="openSpeciesActivity"
-            />
-
-    </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>

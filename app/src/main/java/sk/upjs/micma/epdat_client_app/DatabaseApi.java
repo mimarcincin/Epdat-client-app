@@ -9,7 +9,7 @@ import retrofit2.http.*;
 
 public interface DatabaseApi {
     //String BASE_URL = "http://10.0.2.2:8080/api/";
-    String BASE_URL = "http://192.168.0.112:8080/api/";
+    String BASE_URL = "http://192.168.0.109:8080/api/";
 
     @GET("plants")
     Call<List<Plant>> getPlants();

@@ -6,25 +6,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ListAdapter;
 
 public class SpeciesAdapter extends ListAdapter<Plant, SpeciesViewHolder> {
+    private PlantOnClickListener plantOnClickListener;
 
-    public SpeciesAdapter() {
+    public SpeciesAdapter(PlantOnClickListener plantOnClickListener) {
         super(new SpeciesDiff());
+        this.plantOnClickListener = plantOnClickListener;
     }
 
     @NonNull
     @Override
     public SpeciesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         View layout = LayoutInflater.from(parent.getContext())
-                .inflate(android.R.layout.simple_list_item_1,
+                .inflate(R.layout.species_row,
                         parent,
                         false);
         return new SpeciesViewHolder(layout);
@@ -32,7 +29,7 @@ public class SpeciesAdapter extends ListAdapter<Plant, SpeciesViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull SpeciesViewHolder speciesViewHolder, int i) {
-        speciesViewHolder.bind(getItem(i));
+        speciesViewHolder.bind(getItem(i), plantOnClickListener);
     }
 
 }
