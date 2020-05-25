@@ -13,23 +13,23 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import sk.upjs.micma.epdat_client_app.MainActivity;
-import sk.upjs.micma.epdat_client_app.Plant;
+import sk.upjs.micma.epdat_client_app.models.Plant;
 import sk.upjs.micma.epdat_client_app.PlantListViewModel;
 import sk.upjs.micma.epdat_client_app.PlantOnClickListener;
 import sk.upjs.micma.epdat_client_app.R;
-import sk.upjs.micma.epdat_client_app.SpeciesAdapter;
+import sk.upjs.micma.epdat_client_app.adapters.SpeciesAdapter;
 
 
-public class SpeciesTableFragment extends Fragment implements PlantOnClickListener {
+public class PlantsTableFragment extends Fragment implements PlantOnClickListener {
     private RecyclerView speciesRecyclerView;
     private PlantListViewModel viewModel;
     private Bundle searchInput;
     private SpeciesAdapter specAdapter;
     private TextView familyTextView;
-    public SpeciesTableFragment() {
+    public PlantsTableFragment() {
         // Required empty public constructor
     }
-    public SpeciesTableFragment(Bundle searchInput){
+    public PlantsTableFragment(Bundle searchInput){
         this.searchInput = searchInput;
     }
 

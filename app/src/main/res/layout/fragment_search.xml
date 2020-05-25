@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:padding="12dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,7 +21,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Search species by attributes"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            android:layout_marginBottom="12dp"/>
 
         <TextView
             android:id="@+id/textView2"
@@ -32,7 +34,8 @@
             android:id="@+id/familyBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:hintText="Select Family Name" />
+            app:hintText="Select Family Name"
+            android:layout_marginBottom="12dp"/>
 
         <!--   <EditText
                android:id="@+id/familyEditText"
@@ -55,7 +58,8 @@
             android:ems="10"
             android:enabled="false"
             android:hint="Enter Genus Name"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:layout_marginBottom="12dp"/>
 
         <TextView
             android:id="@+id/textView3"
@@ -70,7 +74,8 @@
             android:ems="10"
             android:enabled="false"
             android:hint="Enter Species Name"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:layout_marginBottom="12dp"/>
 
         <TextView
             android:id="@+id/textView5"
@@ -85,7 +90,8 @@
             android:ems="10"
             android:hint="Enter Tissue"
             android:enabled="false"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:layout_marginBottom="12dp"/>
 
         <Button
             android:id="@+id/searchButton"
@@ -94,7 +100,26 @@
             android:text="Search Species"
 
             />
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="wrap_content"
+            android:id="@+id/clearSearchButton"
+            android:text="Clear search"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="wrap_content"
+            android:id="@+id/addPlantButton"
+            android:text="Add species"
+            android:layout_gravity="center"
+            />
+        </LinearLayout>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

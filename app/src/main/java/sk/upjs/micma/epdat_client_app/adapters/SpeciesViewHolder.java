@@ -1,14 +1,13 @@
-package sk.upjs.micma.epdat_client_app;
-
-//import android.support.annotation.NonNull;
-//import android.support.v7.widget.RecyclerView;
+package sk.upjs.micma.epdat_client_app.adapters;
 
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import sk.upjs.micma.epdat_client_app.PlantOnClickListener;
+import sk.upjs.micma.epdat_client_app.R;
+import sk.upjs.micma.epdat_client_app.models.Plant;
 
 public class SpeciesViewHolder extends RecyclerView.ViewHolder {
     private View itemView;

@@ -1,11 +1,14 @@
 package sk.upjs.micma.epdat_client_app;
 
+import java.sql.Struct;
 import java.util.List;
 
 import retrofit2.*;
 import retrofit2.Call;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.*;
+import sk.upjs.micma.epdat_client_app.models.Plant;
+import sk.upjs.micma.epdat_client_app.models.Record;
 
 public interface DatabaseApi {
     //String BASE_URL = "http://10.0.2.2:8080/api/";
@@ -40,11 +43,27 @@ public interface DatabaseApi {
     Call<List<Plant>> getPlantsByFamilyAndGenusAndTissue(@Path(value = "family", encoded = true) String family,
                                                           @Path(value = "genus", encoded = true) String genus,
                                                           @Path(value = "tissue", encoded = true) String tissue);
+    @POST("plants/{plantId}/records")
+    Call<Record> addRecord(@Path(value = "plantId", encoded = true) String plantId, @Body Record record);
 
+    @PUT("plants/{plantId}/records/{recordId}")
+    Call<Record> updateRecord(@Path(value = "plantId", encoded = true) String plantId,
+                            @Path(value = "recordId", encoded = true) String recordId, @Body Record record);
+
+    @DELETE("plants/{plantId}/records/{recordId}")
+    Call<Void> deleteRecord(@Path(value = "plantId", encoded = true) String plantId,
+                            @Path(value = "recordId", encoded = true) String recordId);
     @POST("plants")
-    Call<Void> addPlant();
+    Call<Plant> addPlant(@Body Plant plant);
 
+    @PUT("plants/{plantId}")
+    Call<Plant> updatePlant(@Path(value = "plantId", encoded = true) String plantId, @Body Plant plant);
 
+    @DELETE("plants/{plantId}")
+    Call<Void> deletePlant(@Path(value = "plantId", encoded = true) String plantId);
+
+    @GET("plants/{plantId}/records")
+    Call<List<Record>> getRecordsByPlantId(@Path(value = "plantId", encoded = true) String plantId);
 
     Retrofit RETROFIT = new Retrofit.Builder()
             .baseUrl(BASE_URL)

@@ -1,4 +1,4 @@
-package sk.upjs.micma.epdat_client_app;
+package sk.upjs.micma.epdat_client_app.models;
 
 import java.io.Serializable;
 import java.util.Objects;

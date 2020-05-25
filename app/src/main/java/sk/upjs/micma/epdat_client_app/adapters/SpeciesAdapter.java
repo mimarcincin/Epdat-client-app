@@ -1,4 +1,4 @@
-package sk.upjs.micma.epdat_client_app;
+package sk.upjs.micma.epdat_client_app.adapters;
 
 //import android.support.annotation.NonNull;
 //import android.support.v7.recyclerview.extensions.ListAdapter;
@@ -8,12 +8,16 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ListAdapter;
+import sk.upjs.micma.epdat_client_app.PlantOnClickListener;
+import sk.upjs.micma.epdat_client_app.R;
+import sk.upjs.micma.epdat_client_app.PlantDiff;
+import sk.upjs.micma.epdat_client_app.models.Plant;
 
 public class SpeciesAdapter extends ListAdapter<Plant, SpeciesViewHolder> {
     private PlantOnClickListener plantOnClickListener;
 
     public SpeciesAdapter(PlantOnClickListener plantOnClickListener) {
-        super(new SpeciesDiff());
+        super(new PlantDiff());
         this.plantOnClickListener = plantOnClickListener;
     }
 

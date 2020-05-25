@@ -1,14 +1,11 @@
 package sk.upjs.micma.epdat_client_app;
 
-//import android.support.annotation.NonNull;
-//import android.support.v7.util.DiffUtil;
-
 import java.util.Objects;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
+import sk.upjs.micma.epdat_client_app.models.Plant;
 
-public class SpeciesDiff extends DiffUtil.ItemCallback {
+public class PlantDiff extends DiffUtil.ItemCallback {
 
     @Override
     public boolean areItemsTheSame(@NonNull Object o, @NonNull Object t1) {

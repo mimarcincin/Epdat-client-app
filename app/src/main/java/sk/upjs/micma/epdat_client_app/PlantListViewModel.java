@@ -1,9 +1,5 @@
 package sk.upjs.micma.epdat_client_app;
 
-//import android.arch.lifecycle.LiveData;
-//import android.arch.lifecycle.MutableLiveData;
-//import android.arch.lifecycle.ViewModel;
-
 import android.os.Bundle;
 
 import java.util.List;
@@ -14,14 +10,13 @@ import androidx.lifecycle.ViewModel;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import sk.upjs.micma.epdat_client_app.models.Plant;
 
 public class PlantListViewModel extends ViewModel {
 
 
     private Bundle searchInput = new Bundle();
-
     private DatabaseApi databaseApi = DatabaseApi.API;
-
     private MutableLiveData<List<Plant>> plants;
 
     public LiveData<List<Plant>> getPlants() {

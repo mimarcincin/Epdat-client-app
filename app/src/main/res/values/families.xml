@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="families_array">
+        <item>Select Family Name</item>
         <item>Acanthaceae</item>
         <item>Achariaceae</item>
         <item>Achatocarpaceae</item>

@@ -27,7 +27,8 @@ public class SearchFragment extends Fragment {
     private EditText tissueEditText;
     private SearchableSpinner familySpinner;
     private Button searchButton;
-
+    private Button addButton;
+    private Button clearButton;
     public SearchFragment() {
         // Required empty public constructor
     }
@@ -47,6 +48,27 @@ public class SearchFragment extends Fragment {
         tissueEditText = (EditText) view.findViewById(R.id.tissueEditText);
         familySpinner = (SearchableSpinner) view.findViewById(R.id.familyBox);
         searchButton = (Button) view.findViewById(R.id.searchButton);
+        addButton = (Button) view.findViewById(R.id.addPlantButton);
+        clearButton = view.findViewById(R.id.clearSearchButton);
+        familySpinner.setSelection(0);
+
+        clearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                familySpinner.setSelection(0);
+                genusEditText.setText("");
+                tissueEditText.setText("");
+                speciesEditText.setText("");
+                tissueEditText.setText("");
+            }
+        });
+
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) getActivity()).showAddPlantFragment();
+            }
+        });
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,7 +90,7 @@ public class SearchFragment extends Fragment {
         familySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (!familySpinner.getSelectedItem().toString().equals("")) {
+                if (!(familySpinner.getSelectedItem().toString().equals("")||familySpinner.getSelectedItem().toString().equals("Select Family Name"))) {
                     genusEditText.setEnabled(true);
                     tissueEditText.setEnabled(true);
                 } else {
@@ -89,7 +111,7 @@ public class SearchFragment extends Fragment {
 
     public void openSpeciesActivity() {
         String family;
-        if (familySpinner.getSelectedItem()==null) {
+        if (familySpinner.getSelectedItem()==null || familySpinner.getSelectedItem().toString().equals("Select Family Name")) {
             family = "";
         } else {
             family = "" + familySpinner.getSelectedItem().toString();

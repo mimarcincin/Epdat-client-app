@@ -4,62 +4,98 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragments.PlantInfoFragment">
+    tools:context=".fragments.PlantInfoFragment"
+    android:padding="12dp">
 
     <LinearLayout
         android:id="@+id/plantInfoLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        >
 
         <TextView
             android:id="@+id/familyNameInfo"
             android:textSize="20sp"
+            android:text="family"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/genusNameInfo"
             android:textSize="20sp"
+            android:text="genus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/speciesNameInfo"
             android:textSize="20sp"
+            android:text="species"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/authorityNameInfo"
             android:textSize="16sp"
+            android:text="authority"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/noticeNameInfo"
             android:textSize="16sp"
+            android:text="notice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/createdPlantAtInfo"
             android:textSize="12sp"
+            android:text="createdAt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/updatedPlantAtNameInfo"
             android:textSize="12sp"
+            android:text="updatedAt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="right"
+            >
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Edit"
+                android:id="@+id/editPlantButton"/>
+            <Button
+                android:text="Delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/deletePlantButton"/>
+            <Button
+                android:text="Add Record"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/addRecordButton"/>
+        </LinearLayout>
+        <TextView
+            android:text="List of records:"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
         <View android:background="@color/colorPrimaryDark"
             android:layout_width = "match_parent"
             android:layout_height="1dp"
             app:layout_constraintBottom_toBottomOf="@+id/plantInfoLinearLayout"
         />
+
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recordsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/plantInfoLinearLayout" />
 </androidx.constraintlayout.widget.ConstraintLayout>
