@@ -58,7 +58,7 @@ public class AddRecordFragment extends Fragment {
         plantplant.setText(plant.getGenus() + " " + plant.getSpecies());
 
         editRecordTitle.setText("Add new record for");
-
+        applyButton.setText("Add");
         clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,6 +116,8 @@ public class AddRecordFragment extends Fragment {
             public void onResponse(Call<Record> call, Response<Record> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(getContext(), "Record successfully added", Toast.LENGTH_SHORT).show();
+                    ((PlantInfoFragment)getFragmentManager().findFragmentByTag("PLANT_INFO_F")).addRecordToList(response.body());
+                    getFragmentManager().popBackStack();
                 } else {
                     Toast.makeText(getContext(), "Unsuccessful", Toast.LENGTH_SHORT).show();
                 }

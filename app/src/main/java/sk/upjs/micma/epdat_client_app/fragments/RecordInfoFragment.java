@@ -63,15 +63,7 @@ public class RecordInfoFragment extends Fragment {
         backButton = view.findViewById(R.id.backRecordButton);
         deleteButton = view.findViewById(R.id.deleteRecordButton);
 
-        recordIdTextView.setText("ID: " + record.getId());
-        endopolyploidyTextView.setText("Endopolyploidy: " + record.getEndopolyploidy());
-        chromosomeNumberTextView.setText("Chromosome Number: " + record.getChromosomeNumber());
-        ploidyLevelTextView.setText("Ploidy Level: " + record.getPloidyLevel());
-        numberTextView.setText("Number: " + record.getNumber());
-        indexTypeTextView.setText("Intex Type: " + record.getIndexType());
-        tissueTextView.setText("Tissue: " + record.getTissue());
-        createdAtRecordTextView.setText("Created at: " + record.getCreatedAt());
-        updatedAtRecordTextView.setText("Updated at: " + record.getUpdatedAt());
+        refreshRecordInfo(record);
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,6 +103,7 @@ public class RecordInfoFragment extends Fragment {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()){
                     Toast.makeText(getContext(), "Record successfully deleted", Toast.LENGTH_SHORT).show();
+                    ((PlantInfoFragment) getFragmentManager().findFragmentByTag("PLANT_INFO_F")).removeRecordFromList(record);
                     getFragmentManager().popBackStack();
                 } else {
                     Toast.makeText(getContext(), "Unsuccessful", Toast.LENGTH_SHORT).show();;
@@ -123,5 +116,18 @@ public class RecordInfoFragment extends Fragment {
                 Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();;
             }
         });
+    }
+
+    public void refreshRecordInfo(Record record) {
+        this.record = record;
+        recordIdTextView.setText("ID: " + record.getId());
+        endopolyploidyTextView.setText("Endopolyploidy: " + record.getEndopolyploidy());
+        chromosomeNumberTextView.setText("Chromosome Number: " + record.getChromosomeNumber());
+        ploidyLevelTextView.setText("Ploidy Level: " + record.getPloidyLevel());
+        numberTextView.setText("Number: " + record.getNumber());
+        indexTypeTextView.setText("Intex Type: " + record.getIndexType());
+        tissueTextView.setText("Tissue: " + record.getTissue());
+        createdAtRecordTextView.setText("Created at: " + record.getCreatedAt());
+        updatedAtRecordTextView.setText("Updated at: " + record.getUpdatedAt());
     }
 }

@@ -2,10 +2,12 @@ package sk.upjs.micma.epdat_client_app;
 
 import android.os.Bundle;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,6 +27,25 @@ public class PlantListViewModel extends ViewModel {
             refresh();
         }
         return plants;
+    }
+    public void addPlant(Plant plant){
+        ArrayList<Plant> newValue = new
+                ArrayList<>(plants.getValue());
+        newValue.add(plant);
+        plants.postValue(newValue);
+    }
+    public void removePlant(Plant plant){
+        ArrayList<Plant> newValue = new
+                ArrayList<>(plants.getValue());
+        newValue.remove(plant);
+        plants.postValue(newValue);
+    }
+    public void updatePlant(Plant oldP, Plant newP){
+        ArrayList<Plant> newValue = new
+                ArrayList<>(plants.getValue());
+        newValue.remove(oldP);
+        newValue.add(newP);
+        plants.postValue(newValue);
     }
 
     private void refresh() {

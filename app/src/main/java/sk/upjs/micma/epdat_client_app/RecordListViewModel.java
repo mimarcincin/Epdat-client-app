@@ -7,6 +7,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.lifecycle.LiveData;
@@ -26,7 +27,25 @@ public class RecordListViewModel extends ViewModel {
         }
         return records;
     }
-
+    public void addRecord(Record record){
+        ArrayList<Record> newValue = new
+                ArrayList<>(records.getValue());
+        newValue.add(record);
+        records.postValue(newValue);
+    }
+    public void removeRecord(Record record){
+        ArrayList<Record> newValue = new
+                ArrayList<>(records.getValue());
+        newValue.remove(record);
+        records.postValue(newValue);
+    }
+    public void updateRecord(Record oldR, Record newR){
+        ArrayList<Record> newValue = new
+                ArrayList<>(records.getValue());
+        newValue.remove(oldR);
+        newValue.add(newR);
+        records.postValue(newValue);
+    }
     private void refresh() {
         Call<List<Record>> call = databaseApi.getRecordsByPlantId(""+plant.getId());
         System.out.println("trying with this id: "+plant.getId());

@@ -48,11 +48,13 @@ public class PlantInfoFragment extends Fragment implements RecordOnClickListener
     private Button editPlantButton;
     private Button deletePlantButton;
     private Button addRecordButton;
+    private Record selectedRecord;
 
-    public PlantInfoFragment(){}
+    public PlantInfoFragment() {
+    }
 
     public PlantInfoFragment(Plant plant) {
-    this.plant = plant;
+        this.plant = plant;
     }
 
     @Override
@@ -69,16 +71,10 @@ public class PlantInfoFragment extends Fragment implements RecordOnClickListener
         speciesNameInfo = view.findViewById(R.id.speciesNameInfo);
         authorityNameInfo = view.findViewById(R.id.authorityNameInfo);
         noticeNameInfo = view.findViewById(R.id.noticeNameInfo);
-        createdAtPlantInfo =view.findViewById(R.id.createdPlantAtInfo);
+        createdAtPlantInfo = view.findViewById(R.id.createdPlantAtInfo);
         updatedAtPlantInfo = view.findViewById(R.id.updatedPlantAtNameInfo);
 
-        familyNameInfo.setText("Family: "+plant.getFamily());
-        genusNameInfo.setText("Genus: "+plant.getGenus());
-        speciesNameInfo.setText("Species: "+plant.getSpecies());
-        authorityNameInfo.setText("Authority: "+plant.getAuthority());
-        noticeNameInfo.setText("Notice: "+plant.getNotice());
-        createdAtPlantInfo.setText(plant.getCreatedAt());
-        updatedAtPlantInfo.setText(plant.getUpdatedAt());
+        refreshPlantInfo(plant);
 
         editPlantButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +82,7 @@ public class PlantInfoFragment extends Fragment implements RecordOnClickListener
                 ((MainActivity) getActivity()).showEditPlantFragment(plant);
             }
         });
+
 
         deletePlantButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,7 +94,8 @@ public class PlantInfoFragment extends Fragment implements RecordOnClickListener
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 deletePlant();
-                            }})
+                            }
+                        })
                         .setNegativeButton(android.R.string.no, null).show();
             }
         });
@@ -124,29 +122,61 @@ public class PlantInfoFragment extends Fragment implements RecordOnClickListener
         return view;
     }
 
+    public void refreshPlantInfo(Plant plant) {
+        this.plant = plant;
+        familyNameInfo.setText("Family: " + plant.getFamily());
+        genusNameInfo.setText("Genus: " + plant.getGenus());
+        speciesNameInfo.setText("Species: " + plant.getSpecies());
+        authorityNameInfo.setText("Authority: " + plant.getAuthority());
+        noticeNameInfo.setText("Notice: " + plant.getNotice());
+        createdAtPlantInfo.setText(plant.getCreatedAt());
+        updatedAtPlantInfo.setText(plant.getUpdatedAt());
+    }
+
     private void deletePlant() {
-        Call<Void>  call = databaseApi.deletePlant(plant.getId()+"");
+        Call<Void> call = databaseApi.deletePlant(plant.getId() + "");
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
                     Toast.makeText(getContext(), "Plant successfully deleted", Toast.LENGTH_SHORT).show();
+                    ((PlantsTableFragment) getFragmentManager().findFragmentByTag("PLANTS_TAB_F")).removePlantFromList(plant);
                     getFragmentManager().popBackStack();
                 } else {
-                    Toast.makeText(getContext(), "Unsuccessful", Toast.LENGTH_SHORT).show();;
+                    Toast.makeText(getContext(), "Unsuccessful", Toast.LENGTH_SHORT).show();
+                    ;
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
 
-                Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();;
+                Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                ;
             }
         });
     }
 
     @Override
     public void onRecordClick(Record record) {
+        selectedRecord = record;
         ((MainActivity) getActivity()).showRecordInfoFragment(record, plant);
     }
+
+    public void removeRecordFromList(Record record) {
+        viewModel.removeRecord(selectedRecord);
+    }
+
+    public void addRecordToList(Record record) {
+        viewModel.addRecord(record);
+    }
+
+    public void updateRecordInList(Record record) {
+        System.out.println("Selected record: "+selectedRecord.toString());
+        System.out.println("real record: "+record.toString());
+        viewModel.updateRecord(selectedRecord,record);
+       // viewModel.removeRecord(selectedRecord);
+        //viewModel.addRecord(record);
+    }
+
 }

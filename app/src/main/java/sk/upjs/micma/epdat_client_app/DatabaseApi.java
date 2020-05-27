@@ -12,7 +12,7 @@ import sk.upjs.micma.epdat_client_app.models.Record;
 
 public interface DatabaseApi {
     //String BASE_URL = "http://10.0.2.2:8080/api/";
-    String BASE_URL = "http://192.168.0.109:8080/api/";
+    String BASE_URL = "http://192.168.0.108:8080/api/";
 
     @GET("plants")
     Call<List<Plant>> getPlants();

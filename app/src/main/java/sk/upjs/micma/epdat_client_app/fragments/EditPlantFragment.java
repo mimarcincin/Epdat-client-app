@@ -1,5 +1,7 @@
 package sk.upjs.micma.epdat_client_app.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -103,8 +105,16 @@ public class EditPlantFragment extends Fragment {
                         || familySpinner.getSelectedItem().toString().equals("Select Family Name")) {
                     Toast.makeText(getContext(), "Required fields: Family, Genus, Species, Authority", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getContext(), "Sending", Toast.LENGTH_LONG);
-                    updatePlant();
+
+                    new AlertDialog.Builder(getContext())
+                            .setTitle("Edit plant")
+                            .setMessage("Do you really want to edit this plant?")
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    updatePlant();
+                                }})
+                            .setNegativeButton(android.R.string.no, null).show();
                 }
             }
         });
@@ -112,7 +122,9 @@ public class EditPlantFragment extends Fragment {
     }
     private void setDefaults(){
         System.out.println("fam position: "+familyPosition);
+
         familySpinner.setSelection(familyPosition);
+        //familySpinner.setTitle(plant.getFamily());
         genusEdit.setText(plant.getGenus());
         speciesEdit.setText(plant.getSpecies());
         authorityEdit.setText(plant.getAuthority());
@@ -120,19 +132,23 @@ public class EditPlantFragment extends Fragment {
     }
 
     private void updatePlant() {
-        Plant plant = new Plant();
-        plant.setFamily(familySpinner.getSelectedItem().toString());
-        plant.setGenus(genusEdit.getText().toString());
-        plant.setSpecies(speciesEdit.getText().toString());
-        plant.setAuthority(authorityEdit.getText().toString());
-        plant.setNotice("" + noticeEdit.getText().toString());
-        Call<Plant> call = databaseApi.updatePlant(plant.getId()+"", plant);
+        Plant plantUpdate = new Plant();
+        plantUpdate.setFamily(familySpinner.getSelectedItem().toString());
+        plantUpdate.setGenus(genusEdit.getText().toString());
+        plantUpdate.setSpecies(speciesEdit.getText().toString());
+        plantUpdate.setAuthority(authorityEdit.getText().toString());
+        plantUpdate.setNotice("" + noticeEdit.getText().toString());
+        Call<Plant> call = databaseApi.updatePlant(plant.getId()+"", plantUpdate);
         call.enqueue(new Callback<Plant>() {
             @Override
             public void onResponse(Call<Plant> call, Response<Plant> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(getActivity(), "Species successfully edited", Toast.LENGTH_SHORT).show();
+                    ((PlantsTableFragment)getFragmentManager().findFragmentByTag("PLANTS_TAB_F")).updatePlantInList(response.body());
+                    ((PlantInfoFragment)getFragmentManager().findFragmentByTag("PLANT_INFO_F")).refreshPlantInfo(response.body());
+                    getFragmentManager().popBackStack();
                 } else {
+                    System.out.println(response.toString() + response.body());
                     Toast.makeText(getActivity(), "Unsuccessful", Toast.LENGTH_SHORT).show();
                 }
             }

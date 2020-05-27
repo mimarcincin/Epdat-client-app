@@ -21,14 +21,14 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getSupportFragmentManager().beginTransaction().replace(R.id.activity_main, new SearchFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.activity_main, new SearchFragment(),"SEARCH_F").commit();
 
     }
 
     public void showSpeciesTableFragment(Bundle searchInfo) {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.activity_main, new PlantsTableFragment(searchInfo))
+                .replace(R.id.activity_main, new PlantsTableFragment(searchInfo), "PLANTS_TAB_F")
                 .addToBackStack(null)
                 .commit();
     }
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity{
     public void showPlantInfoFragment(Plant plant){
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.activity_main, new PlantInfoFragment(plant))
+                .replace(R.id.activity_main, new PlantInfoFragment(plant), "PLANT_INFO_F")
                 .addToBackStack(null)
                 .commit();
     }
@@ -44,14 +44,14 @@ public class MainActivity extends AppCompatActivity{
     public void showRecordInfoFragment(Record record, Plant plant) {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.activity_main, new RecordInfoFragment(record, plant))
+                .replace(R.id.activity_main, new RecordInfoFragment(record, plant),"RECORD_INFO_F")
                 .addToBackStack(null)
                 .commit();
     }
     public void showAddRecordFragment(Plant plant){
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.activity_main, new AddRecordFragment(plant))
+                .replace(R.id.activity_main, new AddRecordFragment(plant), "RECORD_ADD_F")
                 .addToBackStack(null)
                 .commit();
     }
@@ -59,22 +59,24 @@ public class MainActivity extends AppCompatActivity{
     public void showEditRecordFragment(Record record, Plant plant){
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.activity_main, new EditRecordFragment(record, plant))
+                .replace(R.id.activity_main, new EditRecordFragment(record, plant),"RECORD_EDIT_F")
                 .addToBackStack(null)
                 .commit();
     }
     public void showAddPlantFragment(){
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.activity_main, new AddPlantFragment())
+                .replace(R.id.activity_main, new AddPlantFragment(), "PLANT_ADD_F")
                 .addToBackStack(null)
                 .commit();
     }
     public void showEditPlantFragment(Plant plant){
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.activity_main, new EditPlantFragment(plant))
+                .replace(R.id.activity_main, new EditPlantFragment(plant), "PLANT_EDIT_F")
                 .addToBackStack(null)
                 .commit();
     }
+
+
 }

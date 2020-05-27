@@ -116,12 +116,14 @@ public class EditRecordFragment extends Fragment {
             record.setNumber(-1);
         }
         record.setTissue(tissueEditText.getText().toString() + "");
-        Call<Record> call = databaseApi.updateRecord(plant.getId() + "", record.getId()+"", record);
+        Call<Record> call = databaseApi.updateRecord(plant.getId() + "", this.record.getId()+"", record);
         call.enqueue(new Callback<Record>() {
             @Override
             public void onResponse(Call<Record> call, Response<Record> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(getContext(), "Record successfully edited", Toast.LENGTH_SHORT).show();
+                    ((RecordInfoFragment)getFragmentManager().findFragmentByTag("RECORD_INFO_F")).refreshRecordInfo(response.body());
+                    ((PlantInfoFragment)getFragmentManager().findFragmentByTag("PLANT_INFO_F")).updateRecordInList(response.body());
                     getFragmentManager().popBackStack();
                 } else {
                     Toast.makeText(getContext(), "Unsuccessful", Toast.LENGTH_SHORT).show();

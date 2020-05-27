@@ -64,7 +64,7 @@ public class Plant implements Serializable {
 
     @Override
     public String toString() {
-        return (getId() + "_" + getFamily() + "_" + getGenus() + "_" + getSpecies() + "_" + getAuthority());
+        return (getId() + "_" + getFamily() + "_" + getGenus() + "_" + getSpecies() + "_" + getAuthority() + "_" + getCreatedAt() + "_" + getUpdatedAt());
     }
 
     @Override
