@@ -2,55 +2,100 @@ package sk.upjs.micma.epdat_client_app.fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
-
 import sk.upjs.micma.epdat_client_app.MainActivity;
 import sk.upjs.micma.epdat_client_app.R;
 
 public class SearchFragment extends Fragment {
 
-    private EditText familyEditText;
     private EditText genusEditText;
     private EditText speciesEditText;
     private EditText tissueEditText;
     private SearchableSpinner familySpinner;
-    private Button searchButton;
-    private Button addButton;
     private Button clearButton;
+    private FloatingActionButton searchFab;
+
+    private int famPos;
+    private String genus;
+    private String species;
+    private String tissue;
+
     public SearchFragment() {
-        // Required empty public constructor
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.add_plant_t).setVisible(true);
+        menu.findItem(R.id.add_record_t).setVisible(false);
+        menu.findItem(R.id.edit_plant_t).setVisible(false);
+        menu.findItem(R.id.delete_plant_t).setVisible(false);
+        menu.findItem(R.id.edit_record_t).setVisible(false);
+        menu.findItem(R.id.delete_record_t).setVisible(false);
+        menu.findItem(R.id.refresh_t).setVisible(false);
+        super.onPrepareOptionsMenu(menu);
+    }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (familySpinner != null){
+        outState.putInt("familyPos", familySpinner.getSelectedItemPosition());
+        outState.putString("genus", genusEditText.getText().toString()+"");
+        outState.putString("species", speciesEditText.getText().toString()+"");
+        outState.putString("tissue", tissueEditText.getText().toString()+"");}
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState!= null){
+        this.famPos = savedInstanceState.getInt("familyPos");
+        this.genus = savedInstanceState.getString("genus");
+        this.species = savedInstanceState.getString("species");
+        this.tissue = savedInstanceState.getString("tissue");}
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         View view = inflater.inflate(R.layout.fragment_search, container, false);
-        genusEditText = (EditText) view.findViewById(R.id.genusEditText);
-        speciesEditText = (EditText) view.findViewById(R.id.speciesEditText);
-        tissueEditText = (EditText) view.findViewById(R.id.tissueEditText);
-        familySpinner = (SearchableSpinner) view.findViewById(R.id.familyBox);
-        searchButton = (Button) view.findViewById(R.id.searchButton);
-        addButton = (Button) view.findViewById(R.id.addPlantButton);
+        genusEditText = view.findViewById(R.id.genusEditText);
+        speciesEditText = view.findViewById(R.id.speciesEditText);
+        tissueEditText = view.findViewById(R.id.tissueEditText);
+        familySpinner = view.findViewById(R.id.familyBox);
+
         clearButton = view.findViewById(R.id.clearSearchButton);
         familySpinner.setSelection(0);
+        searchFab = view.findViewById(R.id.search_fab);
+
+        if (savedInstanceState!=null){
+            familySpinner.setSelection(famPos);
+            genusEditText.setText(genus);
+            speciesEditText.setText(species);
+            tissueEditText.setText(tissue);
+        }
+
+        searchFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openSpeciesActivity();
+            }
+        });
 
         clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,20 +105,6 @@ public class SearchFragment extends Fragment {
                 tissueEditText.setText("");
                 speciesEditText.setText("");
                 tissueEditText.setText("");
-            }
-        });
-
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MainActivity) getActivity()).showAddPlantFragment();
-            }
-        });
-
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openSpeciesActivity();
             }
         });
 

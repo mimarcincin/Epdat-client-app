@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    android:padding="12dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:padding="12dp">
+    android:layout_marginTop="?attr/actionBarSize">
+<androidx.constraintlayout.widget.ConstraintLayout
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+
+>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,16 +43,7 @@
             android:id="@+id/familyBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:hintText="Select Family Name"
             android:layout_marginBottom="12dp"/>
-
-        <!--   <EditText
-               android:id="@+id/familyEditText"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:ems="10"
-               android:hint="Enter Family Name"
-               android:inputType="textPersonName" /> -->
 
         <TextView
             android:id="@+id/textView4"
@@ -93,33 +93,22 @@
             android:inputType="textPersonName"
             android:layout_marginBottom="12dp"/>
 
-        <Button
-            android:id="@+id/searchButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Search Species"
+         <Button
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:id="@+id/clearSearchButton"
+             android:text="Clear search"/>
 
-            />
-        <LinearLayout
-            android:layout_width="match_parent"
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/search_fab"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:layout_height="wrap_content"
-            android:id="@+id/clearSearchButton"
-            android:text="Clear search"/>
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:layout_height="wrap_content"
-            android:id="@+id/addPlantButton"
-            android:text="Add species"
-            android:layout_gravity="center"
-            />
-        </LinearLayout>
+            android:layout_gravity="end|bottom"
+            android:layout_margin="0dp"
+            android:contentDescription="Search"
+            app:backgroundTint="@color/colorPrimary"
+            android:src="@drawable/ic_search_black_24dp" />
+
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

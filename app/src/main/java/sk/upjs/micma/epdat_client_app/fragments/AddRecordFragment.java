@@ -2,6 +2,7 @@ package sk.upjs.micma.epdat_client_app.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -9,6 +10,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,7 +25,7 @@ import sk.upjs.micma.epdat_client_app.models.Record;
 
 public class AddRecordFragment extends Fragment {
     private Plant plant;
-    private TextView editRecordTitle;
+    private Bundle addingRecord;
     private TextView plantplant;
     private CheckBox endopolyCheckBox;
     private EditText chromosomeNumberEditText;
@@ -33,18 +35,51 @@ public class AddRecordFragment extends Fragment {
     private EditText tissueEditText;
     private Button clearButton;
     private Button applyButton;
-    private Button backButton;
     private DatabaseApi databaseApi = DatabaseApi.API;
-
+    public AddRecordFragment(){}
     public AddRecordFragment(Plant plant) {
         this.plant = plant;
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        addingRecord = new Bundle();
+        addingRecord.putBoolean("endo", endopolyCheckBox.isChecked());
+        addingRecord.putString("chrom", chromosomeNumberEditText.getText().toString()+"");
+        addingRecord.putString("ploi", ploidyLevelEditText.getText().toString()+"");
+        addingRecord.putString("iType", indexTypeEditText.getText().toString()+"");
+        addingRecord.putString("numb", numberEditText.getText().toString()+"");
+        addingRecord.putString("tiss", tissueEditText.getText().toString()+"");
+        outState.putBundle("addRec", addingRecord);
+        outState.putSerializable("plant", plant);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            plant = (Plant) savedInstanceState.getSerializable("plant");
+            addingRecord = savedInstanceState.getBundle("addRec");
+        }
+    }
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.add_plant_t).setVisible(false);
+        menu.findItem(R.id.add_record_t).setVisible(false);
+        menu.findItem(R.id.edit_plant_t).setVisible(false);
+        menu.findItem(R.id.delete_plant_t).setVisible(false);
+        menu.findItem(R.id.edit_record_t).setVisible(false);
+        menu.findItem(R.id.delete_record_t).setVisible(false);
+        menu.findItem(R.id.refresh_t).setVisible(false);
+        super.onPrepareOptionsMenu(menu);
+
+    }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_record_edit, container, false);
-        editRecordTitle = view.findViewById(R.id.editRecordTitleTextView);
+        setHasOptionsMenu(true);
         plantplant = view.findViewById(R.id.plantplantTextView);
         endopolyCheckBox = view.findViewById(R.id.endoCheckBox);
         chromosomeNumberEditText = view.findViewById(R.id.chromNumEditText);
@@ -54,15 +89,19 @@ public class AddRecordFragment extends Fragment {
         tissueEditText = view.findViewById(R.id.tissueRecordEditText);
         clearButton = view.findViewById(R.id.clearRecordEditButton);
         applyButton = view.findViewById(R.id.applyRecordEditButton);
-        backButton = view.findViewById(R.id.backRecordEditButton);
         plantplant.setText(plant.getGenus() + " " + plant.getSpecies());
-
-        editRecordTitle.setText("Add new record for");
-        applyButton.setText("Add");
+            if (addingRecord!=null){
+                endopolyCheckBox.setChecked(addingRecord.getBoolean("endo"));
+                chromosomeNumberEditText.setText(addingRecord.getString("chrom")+"");
+                ploidyLevelEditText.setText(addingRecord.getString("ploi")+"");
+                indexTypeEditText.setText(addingRecord.getString("iType")+"");
+                numberEditText.setText(addingRecord.getString("numb")+"");
+                tissueEditText.setText(addingRecord.getString("tiss")+"");
+            }
+        applyButton.setText("Add record");
         clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 endopolyCheckBox.setChecked(true);
                 chromosomeNumberEditText.setText("");
                 ploidyLevelEditText.setText("");
@@ -72,21 +111,18 @@ public class AddRecordFragment extends Fragment {
             }
         });
 
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getFragmentManager().popBackStack();
-            }
-        });
-
         applyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addRecord();
+                if (tissueEditText.getText().toString().equals("")){
+                    Toast.makeText(getActivity(), "Required field: Tissue", Toast.LENGTH_SHORT);
+                } else {
+                    addRecord();
+                }
+
+
             }
         });
-
-
         return view;
     }
 
@@ -128,6 +164,5 @@ public class AddRecordFragment extends Fragment {
                 Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 }

@@ -48,7 +48,7 @@ public class PlantListViewModel extends ViewModel {
         plants.postValue(newValue);
     }
 
-    private void refresh() {
+    public void refresh() {
         Call<List<Plant>> call;
         String family = searchInput.get("family").toString();
         String genus = searchInput.get("genus").toString();

@@ -1,5 +1,7 @@
 package sk.upjs.micma.epdat_client_app.adapters;
 
+import android.graphics.Color;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -33,13 +35,23 @@ class RecordViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(Record record, RecordOnClickListener recordOnClickListener){
-        recordIdTextView.setText(""+record.getId());
-        endopolyploidyTextView.setText(""+record.getEndopolyploidy());
-        chromosomeNumberTextView.setText(""+record.getChromosomeNumber());
-        ploidyLevelTextView.setText(""+record.getPloidyLevel());
-        numberTextView.setText(""+record.getNumber());
-        indexTypeTextView.setText(""+record.getIndexType());
-        tissueTextView.setText(""+record.getTissue());
+        recordIdTextView.setText("ID: "+record.getId());
+        boolean end = false;
+        if (record.getEndopolyploidy()==1) end = true;
+        endopolyploidyTextView.setText("Endopolyploidy: "+end);
+        String chrom = "Chrom. num.: ";
+        if (record.getChromosomeNumber()!=null && !record.getChromosomeNumber().equals("")) {chrom+=record.getChromosomeNumber();} else {chrom+="-";}
+        chromosomeNumberTextView.setText(chrom);
+        String ploid = "Ploidy level: ";
+        if (record.getPloidyLevel()!=-1 && record.getPloidyLevel()!=0) {ploid+=record.getPloidyLevel()+"x";} else {ploid+="-";}
+        ploidyLevelTextView.setText(ploid);
+        String numb = " ";
+        if (record.getNumber()!=-1 && record.getNumber()!=-0) {numb+=record.getNumber();} else {numb+="-";}
+        numberTextView.setText(numb);
+        String itype = "Index type: ";
+        if(record.getIndexType()!=null && !record.getIndexType().equals("")) {itype+=record.getIndexType();} else {itype+="-";}
+        indexTypeTextView.setText(itype);
+        tissueTextView.setText("Tissue: "+record.getTissue());
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

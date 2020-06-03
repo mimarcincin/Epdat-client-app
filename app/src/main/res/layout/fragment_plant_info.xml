@@ -5,7 +5,9 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.PlantInfoFragment"
-    android:padding="12dp">
+    android:padding="12dp"
+    android:id="@+id/refreshRecords"
+    android:layout_marginTop="?attr/actionBarSize">
 
     <LinearLayout
         android:id="@+id/plantInfoLinearLayout"
@@ -57,28 +59,6 @@
             android:text="updatedAt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="right"
-            >
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Edit"
-                android:id="@+id/editPlantButton"/>
-            <Button
-                android:text="Delete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/deletePlantButton"/>
-            <Button
-                android:text="Add Record"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/addRecordButton"/>
-        </LinearLayout>
         <TextView
             android:text="List of records:"
             android:textSize="20sp"
@@ -92,10 +72,15 @@
         />
 
     </LinearLayout>
-
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        app:layout_constraintTop_toBottomOf="@+id/plantInfoLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/swipeSwipe">
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recordsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/plantInfoLinearLayout" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -46,7 +46,7 @@ public class RecordListViewModel extends ViewModel {
         newValue.add(newR);
         records.postValue(newValue);
     }
-    private void refresh() {
+    public void refresh() {
         Call<List<Record>> call = databaseApi.getRecordsByPlantId(""+plant.getId());
         System.out.println("trying with this id: "+plant.getId());
         call.enqueue(new Callback<List<Record>>() {

@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="20dp">
+    android:padding="20dp"
+    android:layout_marginTop="?attr/actionBarSize">
 
 
 
@@ -82,29 +83,5 @@
         android:textSize="14sp"
         tools:layout_editor_absoluteX="5dp"
         tools:layout_editor_absoluteY="190dp" />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="right"
-        android:orientation="horizontal"
-        tools:layout_editor_absoluteX="4dp"
-        tools:layout_editor_absoluteY="539dp">
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/deleteRecordButton"
-            android:text="Delete"/>
 
-        <Button
-            android:id="@+id/editRecordButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Edit" />
-
-        <Button
-            android:id="@+id/backRecordButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Back" />
-    </LinearLayout>
 </LinearLayout>

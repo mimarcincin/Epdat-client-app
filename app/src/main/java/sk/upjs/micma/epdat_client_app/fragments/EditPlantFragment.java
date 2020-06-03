@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -11,12 +12,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
-
 import java.util.Arrays;
 import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -29,10 +27,10 @@ import sk.upjs.micma.epdat_client_app.models.Plant;
 
 public class EditPlantFragment extends Fragment {
     private Plant plant;
-    private TextView editTitleTextView;
     private TextView plantplant;
     private int familyPosition;
-
+    private Plant editingPlant;
+    private int editingFamPos;
     private EditText genusEdit;
     private EditText speciesEdit;
     private EditText authorityEdit;
@@ -40,23 +38,48 @@ public class EditPlantFragment extends Fragment {
 
     private SearchableSpinner familySpinner;
 
-    private Button backButton;
     private Button clearButton;
     private Button applyButton;
 
     private DatabaseApi databaseApi = DatabaseApi.API;
     private String[] myResArray;
-
+    public EditPlantFragment(){}
     public EditPlantFragment(Plant plant) {
         this.plant = plant;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        editingFamPos = familySpinner.getSelectedItemPosition();
+        editingPlant = new Plant();
+        editingPlant.setFamily("");
+        editingPlant.setGenus(genusEdit.getText().toString()+"");
+        editingPlant.setSpecies(speciesEdit.getText().toString()+"");
+        editingPlant.setAuthority(authorityEdit.getText().toString()+"");
+        editingPlant.setNotice(noticeEdit.getText().toString()+"");
+        outState.putSerializable("editPlant", editingPlant);
+        outState.putInt("editFamPos", editingFamPos);
+        outState.putSerializable("plant", plant);
+        outState.putInt("famPos", familyPosition);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState!=null){
+            editingPlant = (Plant) savedInstanceState.getSerializable("editPlant");
+            editingFamPos = savedInstanceState.getInt("editFamPos");
+            plant = (Plant) savedInstanceState.getSerializable("plant");
+            familyPosition = savedInstanceState.getInt("famPos");
+        }
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_plant_edit, container, false);
-
-        editTitleTextView = view.findViewById(R.id.editPlantTitleTextView);
+        setHasOptionsMenu(true);
         plantplant = view.findViewById(R.id.plantplant2TextView);
 
         genusEdit = view.findViewById(R.id.genusPlantEditText);
@@ -75,20 +98,21 @@ public class EditPlantFragment extends Fragment {
 
         familySpinner.setAdapter(adapter);
 
-        backButton = view.findViewById(R.id.backPlantEditButton);
         clearButton = view.findViewById(R.id.clearPlantEditButton);
         applyButton = view.findViewById(R.id.applyPlantEditButton);
         applyButton.setText("Apply");
         clearButton.setText("Set defaults");
         setDefaults();
-        editTitleTextView.setText("Edit");
         plantplant.setText(plant.getGenus()+" "+plant.getSpecies());
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getFragmentManager().popBackStack();
-            }
-        });
+        applyButton.setText("Apply changes");
+
+        if(editingPlant!=null){
+            familySpinner.setSelection(editingFamPos);
+            genusEdit.setText(editingPlant.getGenus()+"");
+            speciesEdit.setText(editingPlant.getSpecies()+"");
+            authorityEdit.setText(editingPlant.getAuthority()+"");
+            noticeEdit.setText(editingPlant.getNotice()+"");
+        }
 
         clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,11 +148,22 @@ public class EditPlantFragment extends Fragment {
         System.out.println("fam position: "+familyPosition);
 
         familySpinner.setSelection(familyPosition);
-        //familySpinner.setTitle(plant.getFamily());
         genusEdit.setText(plant.getGenus());
         speciesEdit.setText(plant.getSpecies());
         authorityEdit.setText(plant.getAuthority());
         noticeEdit.setText(plant.getNotice()+"");
+    }
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.add_plant_t).setVisible(false);
+        menu.findItem(R.id.add_record_t).setVisible(false);
+        menu.findItem(R.id.edit_plant_t).setVisible(false);
+        menu.findItem(R.id.delete_plant_t).setVisible(false);
+        menu.findItem(R.id.edit_record_t).setVisible(false);
+        menu.findItem(R.id.delete_record_t).setVisible(false);
+        menu.findItem(R.id.refresh_t).setVisible(false);
+        super.onPrepareOptionsMenu(menu);
+
     }
 
     private void updatePlant() {

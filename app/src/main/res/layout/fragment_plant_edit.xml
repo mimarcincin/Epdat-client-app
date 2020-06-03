@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp"
+    android:layout_marginTop="?attr/actionBarSize">
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="15dp">
+>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:text="Edit"
-        android:gravity="center"
-        android:id="@+id/editPlantTitleTextView"
-
-        />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,7 +23,7 @@
         android:layout_marginBottom="10dp"/>
 
     <TextView
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="0dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="13sp"
@@ -110,10 +107,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/clearPlantEditButton"
             android:text="Clear"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/backPlantEditButton"
-            android:text="Back"/>
+
     </LinearLayout>
 </LinearLayout>
+</ScrollView>
