@@ -29,6 +29,7 @@ public class PlantsTableFragment extends Fragment implements PlantOnClickListene
     private SpeciesAdapter specAdapter;
     private Plant selectedPlant;
     private SwipeRefreshLayout swipyBoy;
+    private boolean loggedIn;
     public PlantsTableFragment() {
     }
     public PlantsTableFragment(Bundle searchInput){
@@ -44,6 +45,9 @@ public class PlantsTableFragment extends Fragment implements PlantOnClickListene
         menu.findItem(R.id.edit_record_t).setVisible(false);
         menu.findItem(R.id.delete_record_t).setVisible(false);
         menu.findItem(R.id.refresh_t).setVisible(true);
+        loggedIn = !((MainActivity) getActivity()).getToken().equals("");
+        menu.findItem(R.id.login_t).setVisible(!loggedIn);
+        menu.findItem(R.id.logout_t).setVisible(loggedIn);
         super.onPrepareOptionsMenu(menu);
 
     }
@@ -90,9 +94,11 @@ public class PlantsTableFragment extends Fragment implements PlantOnClickListene
     public void addPlantToList(Plant plant){
         viewModel.addPlant(plant);
     }
+
     public void removePlantFromList(Plant plant){
         viewModel.removePlant(selectedPlant);
     }
+
     public void updatePlantInList(Plant plant){
         viewModel.updatePlant(selectedPlant, plant);
     }

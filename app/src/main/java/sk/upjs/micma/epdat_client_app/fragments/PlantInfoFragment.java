@@ -46,7 +46,7 @@ public class PlantInfoFragment extends Fragment implements RecordOnClickListener
     private RecyclerView recordsRecyclerView;
     private RecordListViewModel viewModel;
     private RecordsAdapter recAdapter;
-
+    private boolean loggedIn;
     private Record selectedRecord;
 
     public PlantInfoFragment() {
@@ -131,6 +131,9 @@ public class PlantInfoFragment extends Fragment implements RecordOnClickListener
         menu.findItem(R.id.edit_record_t).setVisible(false);
         menu.findItem(R.id.delete_record_t).setVisible(false);
         menu.findItem(R.id.refresh_t).setVisible(true);
+        loggedIn = !((MainActivity) getActivity()).getToken().equals("");
+        menu.findItem(R.id.login_t).setVisible(!loggedIn);
+        menu.findItem(R.id.logout_t).setVisible(loggedIn);
         super.onPrepareOptionsMenu(menu);
 
     }
@@ -150,7 +153,7 @@ public class PlantInfoFragment extends Fragment implements RecordOnClickListener
     }
 
     private void deletePlant() {
-        Call<Void> call = databaseApi.deletePlant(plant.getId() + "");
+        Call<Void> call = databaseApi.deletePlant(plant.getId() + "", "Bearer "+((MainActivity) getActivity()).getToken());
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -160,6 +163,7 @@ public class PlantInfoFragment extends Fragment implements RecordOnClickListener
                     getFragmentManager().popBackStack();
                 } else {
                     Toast.makeText(getContext(), "Unsuccessful", Toast.LENGTH_SHORT).show();
+                    ((MainActivity) getActivity()).resetToken();
                 }
             }
 
@@ -197,6 +201,7 @@ public class PlantInfoFragment extends Fragment implements RecordOnClickListener
         });
         refreshPlantInfo(plant);
     }
+
     public String formatStupidDate(String stupidDate){
         String year = "";
         String month = "";

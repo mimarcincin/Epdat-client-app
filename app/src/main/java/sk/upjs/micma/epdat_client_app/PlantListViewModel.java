@@ -54,34 +54,18 @@ public class PlantListViewModel extends ViewModel {
         String genus = searchInput.get("genus").toString();
         String species = searchInput.get("species").toString();
         String tissue = searchInput.get("tissue").toString();
-
-        if (!family.equals("")) {
-            if (!genus.equals("")) {
-                if (!species.equals("")){
-                    if(!tissue.equals("")){
-                        call = databaseApi.getPlantsByFamilyAndGenusAndSpeciesAndTissue(family, genus, species, tissue);
-                    } else {
-                        call = databaseApi.getPlantsByFamilyAndGenusAndSpecies(family, genus, species);
-                    }
-                } else {
-                    if(!tissue.equals("")){
-                        call = databaseApi.getPlantsByFamilyAndGenusAndTissue(family, genus, tissue);
-                    } else {
-                        call = databaseApi.getPlantsByFamilyAndGenus(family, genus);
-                    }
-                }
-            } else {
-                if(!tissue.equals("")){
-                    call = databaseApi.getPlantsByFamilyAndTissue(family, tissue);
-                } else {
-                    call = databaseApi.getPlantsByFamily(family);
-                }
-            }
-        } else {
-            call = databaseApi.getPlants();
-        }
-
-
+        String finalUrl = "";
+        if (!family.equals("")) finalUrl="F";
+        if (!genus.equals("")) finalUrl="G";
+        if (!tissue.equals("")) finalUrl+="T";
+        if (!species.equals("")) finalUrl="S";
+        call = databaseApi.getPlants();
+        if (finalUrl.equals("F")) call = databaseApi.getPlantsByFamily(family);
+        if (finalUrl.equals("G")) call = databaseApi.getPlantsByGenus(genus);
+        if (finalUrl.equals("S")) call = databaseApi.getPlantsBySpecies(species);
+        if (finalUrl.equals("T")) call = databaseApi.getPlantsByTissue(tissue);
+        if (finalUrl.equals("FT")) call = databaseApi.getPlantsByFamilyAndTissue(family, tissue);
+        if (finalUrl.equals("GT")) call = databaseApi.getPlantsByGenusAndTissue(genus, tissue);
         call.enqueue(
                 new Callback<List<Plant>>() {
                     @Override
@@ -92,15 +76,12 @@ public class PlantListViewModel extends ViewModel {
                             System.out.println("this should work: " + response.body());
                         }
                     }
-
                     @Override
                     public void onFailure(Call<List<Plant>> call, Throwable t) {
                         t.printStackTrace();
                         System.out.println("NOT WORKIIIIIIIIIIIIIIINGGGGGGGGG");
                     }
                 }
-
-
         );
 
     }

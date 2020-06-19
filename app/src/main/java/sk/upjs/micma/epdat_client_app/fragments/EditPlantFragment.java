@@ -22,6 +22,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import sk.upjs.micma.epdat_client_app.DatabaseApi;
+import sk.upjs.micma.epdat_client_app.MainActivity;
 import sk.upjs.micma.epdat_client_app.R;
 import sk.upjs.micma.epdat_client_app.models.Plant;
 
@@ -153,6 +154,7 @@ public class EditPlantFragment extends Fragment {
         authorityEdit.setText(plant.getAuthority());
         noticeEdit.setText(plant.getNotice()+"");
     }
+
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         menu.findItem(R.id.add_plant_t).setVisible(false);
@@ -162,6 +164,8 @@ public class EditPlantFragment extends Fragment {
         menu.findItem(R.id.edit_record_t).setVisible(false);
         menu.findItem(R.id.delete_record_t).setVisible(false);
         menu.findItem(R.id.refresh_t).setVisible(false);
+        menu.findItem(R.id.login_t).setVisible(false);
+        menu.findItem(R.id.logout_t).setVisible(false);
         super.onPrepareOptionsMenu(menu);
 
     }
@@ -173,7 +177,7 @@ public class EditPlantFragment extends Fragment {
         plantUpdate.setSpecies(speciesEdit.getText().toString());
         plantUpdate.setAuthority(authorityEdit.getText().toString());
         plantUpdate.setNotice("" + noticeEdit.getText().toString());
-        Call<Plant> call = databaseApi.updatePlant(plant.getId()+"", plantUpdate);
+        Call<Plant> call = databaseApi.updatePlant(plant.getId()+"", plantUpdate, "Bearer "+((MainActivity) getActivity()).getToken());
         call.enqueue(new Callback<Plant>() {
             @Override
             public void onResponse(Call<Plant> call, Response<Plant> response) {
@@ -183,7 +187,7 @@ public class EditPlantFragment extends Fragment {
                     ((PlantInfoFragment)getFragmentManager().findFragmentByTag("PLANT_INFO_F")).refreshPlantInfo(response.body());
                     getFragmentManager().popBackStack();
                 } else {
-                    System.out.println(response.toString() + response.body());
+                    ((MainActivity) getActivity()).resetToken();
                     Toast.makeText(getActivity(), "Unsuccessful", Toast.LENGTH_SHORT).show();
                 }
             }

@@ -43,4 +43,14 @@
         android:icon="@drawable/ic_delete_forever_black_24dp"
         android:title="Refresh"
         app:showAsAction="never"/>
+    <item android:id="@+id/login_t"
+        android:visible="false"
+        android:icon="@drawable/ic_account_box_black_24dp"
+        android:title="Log in"
+        app:showAsAction="never"/>
+    <item android:id="@+id/logout_t"
+        android:visible="false"
+        android:icon="@drawable/ic_visibility_off_black_24dp"
+        android:title="Log out"
+        app:showAsAction="never"/>
 </menu>

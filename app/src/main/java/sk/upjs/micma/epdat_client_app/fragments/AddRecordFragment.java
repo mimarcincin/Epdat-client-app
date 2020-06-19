@@ -19,6 +19,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import sk.upjs.micma.epdat_client_app.DatabaseApi;
+import sk.upjs.micma.epdat_client_app.MainActivity;
 import sk.upjs.micma.epdat_client_app.R;
 import sk.upjs.micma.epdat_client_app.models.Plant;
 import sk.upjs.micma.epdat_client_app.models.Record;
@@ -35,6 +36,7 @@ public class AddRecordFragment extends Fragment {
     private EditText tissueEditText;
     private Button clearButton;
     private Button applyButton;
+    private EditText sourceEditText;
     private DatabaseApi databaseApi = DatabaseApi.API;
     public AddRecordFragment(){}
     public AddRecordFragment(Plant plant) {
@@ -51,6 +53,7 @@ public class AddRecordFragment extends Fragment {
         addingRecord.putString("iType", indexTypeEditText.getText().toString()+"");
         addingRecord.putString("numb", numberEditText.getText().toString()+"");
         addingRecord.putString("tiss", tissueEditText.getText().toString()+"");
+        addingRecord.putString("sour", sourceEditText.getText().toString()+"");
         outState.putBundle("addRec", addingRecord);
         outState.putSerializable("plant", plant);
     }
@@ -63,6 +66,7 @@ public class AddRecordFragment extends Fragment {
             addingRecord = savedInstanceState.getBundle("addRec");
         }
     }
+
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         menu.findItem(R.id.add_plant_t).setVisible(false);
@@ -72,9 +76,12 @@ public class AddRecordFragment extends Fragment {
         menu.findItem(R.id.edit_record_t).setVisible(false);
         menu.findItem(R.id.delete_record_t).setVisible(false);
         menu.findItem(R.id.refresh_t).setVisible(false);
+        menu.findItem(R.id.login_t).setVisible(false);
+        menu.findItem(R.id.logout_t).setVisible(false);
         super.onPrepareOptionsMenu(menu);
 
     }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -89,6 +96,7 @@ public class AddRecordFragment extends Fragment {
         tissueEditText = view.findViewById(R.id.tissueRecordEditText);
         clearButton = view.findViewById(R.id.clearRecordEditButton);
         applyButton = view.findViewById(R.id.applyRecordEditButton);
+        sourceEditText = view.findViewById(R.id.sourceRecordEditText);
         plantplant.setText(plant.getGenus() + " " + plant.getSpecies());
             if (addingRecord!=null){
                 endopolyCheckBox.setChecked(addingRecord.getBoolean("endo"));
@@ -97,6 +105,7 @@ public class AddRecordFragment extends Fragment {
                 indexTypeEditText.setText(addingRecord.getString("iType")+"");
                 numberEditText.setText(addingRecord.getString("numb")+"");
                 tissueEditText.setText(addingRecord.getString("tiss")+"");
+                sourceEditText.setText(addingRecord.getString("sour")+"");
             }
         applyButton.setText("Add record");
         clearButton.setOnClickListener(new View.OnClickListener() {
@@ -108,6 +117,7 @@ public class AddRecordFragment extends Fragment {
                 indexTypeEditText.setText("");
                 numberEditText.setText("");
                 tissueEditText.setText("");
+                sourceEditText.setText("");
             }
         });
 
@@ -115,12 +125,10 @@ public class AddRecordFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (tissueEditText.getText().toString().equals("")){
-                    Toast.makeText(getActivity(), "Required field: Tissue", Toast.LENGTH_SHORT);
+                    Toast.makeText(getActivity(), "Required field: Tissue", Toast.LENGTH_SHORT).show();
                 } else {
                     addRecord();
                 }
-
-
             }
         });
         return view;
@@ -146,7 +154,7 @@ public class AddRecordFragment extends Fragment {
             record.setNumber(-1);
         }
         record.setTissue(tissueEditText.getText().toString() + "");
-        Call<Record> call = databaseApi.addRecord(plant.getId() + "", record);
+        Call<Record> call = databaseApi.addRecord(plant.getId() + "", record, "Bearer "+((MainActivity) getActivity()).getToken());
         call.enqueue(new Callback<Record>() {
             @Override
             public void onResponse(Call<Record> call, Response<Record> response) {
@@ -156,6 +164,7 @@ public class AddRecordFragment extends Fragment {
                     getFragmentManager().popBackStack();
                 } else {
                     Toast.makeText(getContext(), "Unsuccessful", Toast.LENGTH_SHORT).show();
+                    ((MainActivity) getActivity()).resetToken();
                 }
             }
 

@@ -1,5 +1,6 @@
 package sk.upjs.micma.epdat_client_app.fragments;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -28,7 +29,7 @@ public class SearchFragment extends Fragment {
     private SearchableSpinner familySpinner;
     private Button clearButton;
     private FloatingActionButton searchFab;
-
+    private boolean loggedIn;
     private int famPos;
     private String genus;
     private String species;
@@ -46,6 +47,9 @@ public class SearchFragment extends Fragment {
         menu.findItem(R.id.edit_record_t).setVisible(false);
         menu.findItem(R.id.delete_record_t).setVisible(false);
         menu.findItem(R.id.refresh_t).setVisible(false);
+        loggedIn = !((MainActivity) getActivity()).getToken().equals("");
+        menu.findItem(R.id.login_t).setVisible(!loggedIn);
+        menu.findItem(R.id.logout_t).setVisible(loggedIn);
         super.onPrepareOptionsMenu(menu);
     }
 
@@ -93,6 +97,7 @@ public class SearchFragment extends Fragment {
         searchFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 openSpeciesActivity();
             }
         });
@@ -165,7 +170,6 @@ public class SearchFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-
     }
 
     TextWatcher genusWatcher = new TextWatcher() {

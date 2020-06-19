@@ -8,14 +8,15 @@ public class Record implements Serializable {
     private int endopolyploidy;
     private String chromosomeNumber;
     private int ploidyLevel;
-    private int number;
+    private float number;
+    private String source;
     private String indexType;
     private String tissue;
     private String createdAt;
     private String updatedAt;
 
 
-    public Record(Long id, int endopolyploidy, String chromosomeNumber, int ploidyLevel, int number, String indexType, String tissue, String createdAt, String updatedAt) {
+    public Record(Long id, int endopolyploidy, String chromosomeNumber, int ploidyLevel, float number, String indexType, String tissue,  String source, String createdAt, String updatedAt) {
         this.id = id;
         this.endopolyploidy = endopolyploidy;
         this.chromosomeNumber = chromosomeNumber;
@@ -25,6 +26,7 @@ public class Record implements Serializable {
         this.tissue = tissue;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.source = source;
 
     }
 
@@ -38,7 +40,7 @@ public class Record implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         Record rec = (Record) o;
         return id == rec.id && endopolyploidy == rec.endopolyploidy && chromosomeNumber.equals(rec.chromosomeNumber)
-                && ploidyLevel == rec.ploidyLevel && number == rec.number && indexType.equals(rec.indexType) && tissue.equals(rec.tissue);
+                && ploidyLevel == rec.ploidyLevel && number == rec.number && indexType.equals(rec.indexType) && tissue.equals(rec.tissue) && source.equals(rec.source);
     }
 
     @Override
@@ -83,11 +85,11 @@ public class Record implements Serializable {
         this.ploidyLevel = ploidyLevel;
     }
 
-    public int getNumber() {
+    public float getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(float number) {
         this.number = number;
     }
 
@@ -122,4 +124,6 @@ public class Record implements Serializable {
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
     }
+    public  String getSource(){return source;}
+    public void setSource(){this.source = source;}
 }

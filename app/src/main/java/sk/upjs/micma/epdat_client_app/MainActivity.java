@@ -1,10 +1,12 @@
 package sk.upjs.micma.epdat_client_app;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -18,6 +20,7 @@ import sk.upjs.micma.epdat_client_app.fragments.AddPlantFragment;
 import sk.upjs.micma.epdat_client_app.fragments.AddRecordFragment;
 import sk.upjs.micma.epdat_client_app.fragments.EditPlantFragment;
 import sk.upjs.micma.epdat_client_app.fragments.EditRecordFragment;
+import sk.upjs.micma.epdat_client_app.fragments.LoginFragment;
 import sk.upjs.micma.epdat_client_app.fragments.PlantInfoFragment;
 import sk.upjs.micma.epdat_client_app.fragments.RecordInfoFragment;
 import sk.upjs.micma.epdat_client_app.fragments.SearchFragment;
@@ -26,14 +29,17 @@ import sk.upjs.micma.epdat_client_app.models.Plant;
 import sk.upjs.micma.epdat_client_app.models.Record;
 
 public class MainActivity extends AppCompatActivity {
+    public static final String SHARED_PREFS = "sharedPrefs";
+    public static final String TOKEN = "token";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
-        myToolbar.setOverflowIcon(ContextCompat.getDrawable(this,R.drawable.ic_more_vert_black_24dp));
+        myToolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.ic_more_vert_black_24dp));
         setSupportActionBar(myToolbar);
-        if(savedInstanceState!=null){
+        if (savedInstanceState != null) {
             getSupportActionBar().setTitle(savedInstanceState.getString("title"));
             Fragment fragment = getSupportFragmentManager().getFragment(savedInstanceState, "current");
             if (getVisibleFragment() instanceof SearchFragment) {
@@ -52,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         getSupportFragmentManager().putFragment(outState, "current", getVisibleFragment());
-        outState.putString("title",(String) getSupportActionBar().getTitle());
+        outState.putString("title", (String) getSupportActionBar().getTitle());
     }
 
     @Override
@@ -60,6 +66,20 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.first_menu, menu);
         return true;
+    }
+    public void resetToken(){
+        saveToken("");
+    }
+
+    public void saveToken(String token) {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor e = sharedPreferences.edit();
+        e.putString(TOKEN, token).commit();
+    }
+
+    public String getToken() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        return sharedPreferences.getString(TOKEN, "");
     }
 
     @Override
@@ -72,38 +92,69 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add_plant_t:
-                showAddPlantFragment();
+                if (getToken().equals("")) {
+                    showLoginFragment();
+                    System.out.println("TOK "+getToken());
+                } else {
+                    showAddPlantFragment();
+                }
                 return true;
             case R.id.edit_plant_t:
-                PlantInfoFragment f = (PlantInfoFragment) getSupportFragmentManager().findFragmentByTag("PLANT_INFO_F");
-                showEditPlantFragment(f.getPlant());
+                if (getToken().equals("")) {
+                    showLoginFragment();
+                } else {
+                    PlantInfoFragment f = (PlantInfoFragment) getSupportFragmentManager().findFragmentByTag("PLANT_INFO_F");
+                    showEditPlantFragment(f.getPlant());
+                }
                 return true;
             case R.id.add_record_t:
-                PlantInfoFragment fr = (PlantInfoFragment) getSupportFragmentManager().findFragmentByTag("PLANT_INFO_F");
-                showAddRecordFragment(fr.getPlant());
+                if (getToken().equals("")) {
+                    showLoginFragment();
+                } else {
+                    PlantInfoFragment fr = (PlantInfoFragment) getSupportFragmentManager().findFragmentByTag("PLANT_INFO_F");
+                    showAddRecordFragment(fr.getPlant());
+                }
                 return true;
             case R.id.delete_plant_t:
-                PlantInfoFragment fra = (PlantInfoFragment) getSupportFragmentManager().findFragmentByTag("PLANT_INFO_F");
-                fra.deleteClicked();
+                if (getToken().equals("")) {
+                    showLoginFragment();
+                } else {
+                    PlantInfoFragment fra = (PlantInfoFragment) getSupportFragmentManager().findFragmentByTag("PLANT_INFO_F");
+                    fra.deleteClicked();
+                }
                 return true;
             case R.id.edit_record_t:
-                RecordInfoFragment frag = (RecordInfoFragment) getSupportFragmentManager().findFragmentByTag("RECORD_INFO_F");
-                showEditRecordFragment(frag.getRecord(), frag.getPlant());
+                if (getToken().equals("")) {
+                    showLoginFragment();
+                } else {
+                    RecordInfoFragment frag = (RecordInfoFragment) getSupportFragmentManager().findFragmentByTag("RECORD_INFO_F");
+                    showEditRecordFragment(frag.getRecord(), frag.getPlant());
+                }
                 return true;
             case R.id.delete_record_t:
-                RecordInfoFragment fragm = (RecordInfoFragment) getSupportFragmentManager().findFragmentByTag("RECORD_INFO_F");
-                fragm.deleteClicked();
+                if (getToken().equals("")) {
+                    showLoginFragment();
+                } else {
+                    RecordInfoFragment fragm = (RecordInfoFragment) getSupportFragmentManager().findFragmentByTag("RECORD_INFO_F");
+                    fragm.deleteClicked();
+                }
                 return true;
             case R.id.refresh_t:
-                if (getVisibleFragment() instanceof PlantsTableFragment ){
+                if (getVisibleFragment() instanceof PlantsTableFragment) {
                     PlantsTableFragment fragme = (PlantsTableFragment) getSupportFragmentManager().findFragmentByTag("PLANTS_TAB_F");
                     fragme.refreshPlants();
                 }
-                if (getVisibleFragment() instanceof PlantInfoFragment ){
+                if (getVisibleFragment() instanceof PlantInfoFragment) {
                     PlantInfoFragment fragmen = (PlantInfoFragment) getSupportFragmentManager().findFragmentByTag("PLANT_INFO_F");
                     fragmen.refreshRecords();
                 }
-
+                return true;
+            case R.id.login_t:
+                showLoginFragment();
+                return true;
+            case R.id.logout_t:
+                resetToken();
+                Toast.makeText(this, "You have been logged out", Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -147,6 +198,14 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.activity_main, new SearchFragment(), "SEARCH_F")
                 .commit();
 
+    }
+
+    public void showLoginFragment() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.activity_main, new LoginFragment(), "LOGIN_F")
+                .addToBackStack(null)
+                .commit();
     }
 
     public void showSpeciesTableFragment(Bundle searchInfo) {

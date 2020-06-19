@@ -20,6 +20,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import sk.upjs.micma.epdat_client_app.DatabaseApi;
+import sk.upjs.micma.epdat_client_app.MainActivity;
 import sk.upjs.micma.epdat_client_app.R;
 import sk.upjs.micma.epdat_client_app.models.Plant;
 
@@ -48,6 +49,8 @@ public class AddPlantFragment extends Fragment {
         menu.findItem(R.id.edit_record_t).setVisible(false);
         menu.findItem(R.id.delete_record_t).setVisible(false);
         menu.findItem(R.id.refresh_t).setVisible(false);
+        menu.findItem(R.id.login_t).setVisible(false);
+        menu.findItem(R.id.logout_t).setVisible(false);
         super.onPrepareOptionsMenu(menu);
     }
 
@@ -136,17 +139,17 @@ public class AddPlantFragment extends Fragment {
         plant.setSpecies(speciesEdit.getText().toString());
         plant.setAuthority(authorityEdit.getText().toString());
         plant.setNotice("" + noticeEdit.getText().toString());
-        Call<Plant> call = databaseApi.addPlant(plant);
-        call.enqueue(new Callback<Plant>() {
+        Call<Plant> call = databaseApi.addPlant(plant, "Bearer "+((MainActivity) getActivity()).getToken());
+        call.enqueue(new Callback<Plant>() { //prerobit do samostatnej triedy
             @Override
             public void onResponse(Call<Plant> call, Response<Plant> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(getActivity(), "Species successfully added to database", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getActivity(), "Unsuccessful", Toast.LENGTH_SHORT).show();
+                    ((MainActivity) getActivity()).resetToken();
                 }
             }
-
             @Override
             public void onFailure(Call<Plant> call, Throwable t) {
                 Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();

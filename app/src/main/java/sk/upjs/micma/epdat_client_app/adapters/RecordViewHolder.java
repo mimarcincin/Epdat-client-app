@@ -20,6 +20,7 @@ class RecordViewHolder extends RecyclerView.ViewHolder {
     private TextView numberTextView;
     private TextView indexTypeTextView;
     private TextView tissueTextView;
+    private TextView sourceTextView;
 
 
     public RecordViewHolder(@NonNull View itemView) {
@@ -32,6 +33,7 @@ class RecordViewHolder extends RecyclerView.ViewHolder {
         numberTextView =  itemView.findViewById(R.id.NumberTextView);
         indexTypeTextView = itemView.findViewById(R.id.IndexTypeTextView);
         tissueTextView = itemView.findViewById(R.id.TissueTextView);
+        sourceTextView = itemView.findViewById(R.id.SourceTextView);
     }
 
     public void bind(Record record, RecordOnClickListener recordOnClickListener){
@@ -43,7 +45,7 @@ class RecordViewHolder extends RecyclerView.ViewHolder {
         if (record.getChromosomeNumber()!=null && !record.getChromosomeNumber().equals("")) {chrom+=record.getChromosomeNumber();} else {chrom+="-";}
         chromosomeNumberTextView.setText(chrom);
         String ploid = "Ploidy level: ";
-        if (record.getPloidyLevel()!=-1 && record.getPloidyLevel()!=0) {ploid+=record.getPloidyLevel()+"x";} else {ploid+="-";}
+        if (record.getPloidyLevel()!=-1 && record.getPloidyLevel()!=0) {ploid+=record.getPloidyLevel()+"C";} else {ploid+="-";}
         ploidyLevelTextView.setText(ploid);
         String numb = " ";
         if (record.getNumber()!=-1 && record.getNumber()!=-0) {numb+=record.getNumber();} else {numb+="-";}
@@ -51,6 +53,9 @@ class RecordViewHolder extends RecyclerView.ViewHolder {
         String itype = "Index type: ";
         if(record.getIndexType()!=null && !record.getIndexType().equals("")) {itype+=record.getIndexType();} else {itype+="-";}
         indexTypeTextView.setText(itype);
+        String source = "Source: ";
+        if(record.getSource()!=null && !record.getSource().equals("")) {source+=record.getSource();} else {source+="-";}
+        sourceTextView.setText(source);
         tissueTextView.setText("Tissue: "+record.getTissue());
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override

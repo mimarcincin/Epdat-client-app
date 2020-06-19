@@ -20,6 +20,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import sk.upjs.micma.epdat_client_app.DatabaseApi;
+import sk.upjs.micma.epdat_client_app.MainActivity;
 import sk.upjs.micma.epdat_client_app.R;
 import sk.upjs.micma.epdat_client_app.models.Plant;
 import sk.upjs.micma.epdat_client_app.models.Record;
@@ -37,7 +38,7 @@ public class EditRecordFragment extends Fragment {
     private EditText tissueEditText;
     private Button clearButton;
     private Button applyButton;
-
+    private EditText sourceEditText;
     private DatabaseApi databaseApi = DatabaseApi.API;
 
     public EditRecordFragment() {
@@ -58,6 +59,7 @@ public class EditRecordFragment extends Fragment {
         editingRecord.putString("iType", indexTypeEditText.getText().toString() + "");
         editingRecord.putString("numb", numberEditText.getText().toString() + "");
         editingRecord.putString("tiss", tissueEditText.getText().toString() + "");
+        editingRecord.putString("sour", sourceEditText.getText().toString()+"");
         outState.putBundle("addRec", editingRecord);
         outState.putSerializable("plant", plant);
         outState.putSerializable("record", record);
@@ -72,6 +74,8 @@ public class EditRecordFragment extends Fragment {
         menu.findItem(R.id.edit_record_t).setVisible(false);
         menu.findItem(R.id.delete_record_t).setVisible(false);
         menu.findItem(R.id.refresh_t).setVisible(false);
+        menu.findItem(R.id.login_t).setVisible(false);
+        menu.findItem(R.id.logout_t).setVisible(false);
         super.onPrepareOptionsMenu(menu);
     }
 
@@ -99,6 +103,7 @@ public class EditRecordFragment extends Fragment {
         tissueEditText = view.findViewById(R.id.tissueRecordEditText);
         clearButton = view.findViewById(R.id.clearRecordEditButton);
         applyButton = view.findViewById(R.id.applyRecordEditButton);
+        sourceEditText = view.findViewById(R.id.sourceRecordEditText);
         applyButton.setText("Apply changes");
         returnDefaults();
         if (editingRecord != null) {
@@ -108,6 +113,7 @@ public class EditRecordFragment extends Fragment {
             indexTypeEditText.setText(editingRecord.getString("iType") + "");
             numberEditText.setText(editingRecord.getString("numb") + "");
             tissueEditText.setText(editingRecord.getString("tiss") + "");
+            sourceEditText.setText(editingRecord.getString("sour")+"");
         }
         clearButton.setText("Set defaults");
         clearButton.setOnClickListener(new View.OnClickListener() {
@@ -155,7 +161,8 @@ public class EditRecordFragment extends Fragment {
             record.setNumber(-1);
         }
         record.setTissue(tissueEditText.getText().toString() + "");
-        Call<Record> call = databaseApi.updateRecord(plant.getId() + "", this.record.getId() + "", record);
+        Call<Record> call = databaseApi.updateRecord(plant.getId() + "", this.record.getId() + "", record,
+                "Bearer "+((MainActivity) getActivity()).getToken());
         call.enqueue(new Callback<Record>() {
             @Override
             public void onResponse(Call<Record> call, Response<Record> response) {
@@ -166,6 +173,7 @@ public class EditRecordFragment extends Fragment {
                     getFragmentManager().popBackStack();
                 } else {
                     Toast.makeText(getContext(), "Unsuccessful", Toast.LENGTH_SHORT).show();
+                    ((MainActivity) getActivity()).resetToken();
                 }
             }
 
@@ -185,6 +193,7 @@ public class EditRecordFragment extends Fragment {
         indexTypeEditText.setText("" + record.getIndexType());
         numberEditText.setText("" + record.getNumber());
         tissueEditText.setText("" + record.getTissue());
+        sourceEditText.setText(""+record.getSource());
     }
 
 

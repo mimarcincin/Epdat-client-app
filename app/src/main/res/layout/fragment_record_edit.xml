@@ -111,14 +111,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="13sp"
-        android:text="Tissue"/>
+        android:text="Tissue/Organ"/>
     <EditText
         android:id="@+id/tissueRecordEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
 
-        android:hint="Tissue"/>
+        android:hint="Tissue/Organ"/>
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="13sp"
+        android:text="Source"/>
+    <EditText
+        android:id="@+id/sourceRecordEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+
+        android:hint="Source"/>
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -34,8 +34,9 @@ public class RecordInfoFragment extends Fragment {
     private TextView tissueTextView;
     private TextView createdAtRecordTextView;
     private TextView updatedAtRecordTextView;
-
+    private TextView sourceTextView;
     private DatabaseApi databaseApi = DatabaseApi.API;
+    private boolean loggedIn;
     public RecordInfoFragment(){}
     public RecordInfoFragment(Record record, Plant plant) {
         this.record = record;
@@ -57,6 +58,9 @@ public class RecordInfoFragment extends Fragment {
         menu.findItem(R.id.edit_record_t).setVisible(true);
         menu.findItem(R.id.delete_record_t).setVisible(true);
         menu.findItem(R.id.refresh_t).setVisible(false);
+        loggedIn = !((MainActivity) getActivity()).getToken().equals("");
+        menu.findItem(R.id.login_t).setVisible(!loggedIn);
+        menu.findItem(R.id.logout_t).setVisible(loggedIn);
         super.onPrepareOptionsMenu(menu);
     }
 
@@ -88,6 +92,7 @@ public class RecordInfoFragment extends Fragment {
         numberTextView = view.findViewById(R.id.NumberTextView2);
         indexTypeTextView = view.findViewById(R.id.IndexTypeTextView2);
         tissueTextView = view.findViewById(R.id.TissueTextView2);
+        sourceTextView = view.findViewById(R.id.SourceTextView2);
         createdAtRecordTextView = view.findViewById(R.id.CreatedAtTextView2);
         updatedAtRecordTextView = view.findViewById(R.id.UpdatedAtTextView2);
 
@@ -108,7 +113,8 @@ public class RecordInfoFragment extends Fragment {
     }
 
     private void deleteRecord() {
-        Call<Void> call = databaseApi.deleteRecord(plant.getId()+"", record.getId()+"");
+        Call<Void> call = databaseApi.deleteRecord(plant.getId()+"", record.getId()+"",
+                "Bearer "+((MainActivity) getActivity()).getToken());
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -117,7 +123,8 @@ public class RecordInfoFragment extends Fragment {
                     ((PlantInfoFragment) getFragmentManager().findFragmentByTag("PLANT_INFO_F")).removeRecordFromList(record);
                     getFragmentManager().popBackStack();
                 } else {
-                    Toast.makeText(getContext(), "Unsuccessful", Toast.LENGTH_SHORT).show();;
+                    Toast.makeText(getContext(), "Unsuccessful", Toast.LENGTH_SHORT).show();
+                    ((MainActivity) getActivity()).resetToken();
                 }
             }
 
@@ -147,6 +154,9 @@ public class RecordInfoFragment extends Fragment {
         String itype = "Index type: ";
         if(record.getIndexType()!=null && !record.getIndexType().equals("")) {itype+=record.getIndexType();} else {itype+="-";}
         indexTypeTextView.setText(itype);
+        String source = "Source: ";
+        if(record.getSource()!=null && !record.getSource().equals("")) {source+=record.getSource();} else {source+="-";}
+        sourceTextView.setText(source);
         tissueTextView.setText("Tissue: " + record.getTissue());
         createdAtRecordTextView.setText("Created at: " + formatStupidDate(record.getCreatedAt()));
         updatedAtRecordTextView.setText("Updated at: " + formatStupidDate(record.getUpdatedAt()));

@@ -73,7 +73,13 @@
             android:id="@+id/NumberTextView"
             android:layout_marginRight="3dp"
             android:text="15"/>
-
+        <TextView
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/SourceTextView"
+            android:layout_marginLeft="10dp"
+            android:text="Source: gogogo"/>
 
 
     </LinearLayout>
